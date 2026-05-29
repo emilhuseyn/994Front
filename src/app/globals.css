@@ -1,0 +1,161 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Initial values for the theme CSS variables. ThemeProvider overrides them at
+ * runtime once the backend theme has been fetched. Keeping defaults here avoids
+ * a "flash of unstyled content" on the very first paint.
+ */
+:root {
+  --theme-color-primary: #000000;
+  --theme-color-primary-hover: #262626;
+  --theme-color-accent: #2563eb;
+  --theme-color-bg: #ffffff;
+  --theme-color-fg: #0a0a0a;
+  --theme-color-muted: #6b7280;
+  --theme-color-border: #e5e7eb;
+  --theme-color-soft: #f7f7f7;
+  --theme-color-success: #16a34a;
+  --theme-color-danger: #dc2626;
+  --theme-color-warning: #f59e0b;
+  --theme-font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --theme-font-size-base: 14px;
+  --theme-font-size-heading: 28px;
+  --theme-font-weight-bold: 600;
+  --theme-container-width: 1280px;
+  --theme-radius: 4px;
+  --theme-spacing: 16px;
+  --theme-announcement-bg: #000000;
+  --theme-announcement-fg: #ffffff;
+  --theme-header-bg: #ffffff;
+  --theme-footer-bg: #ffffff;
+  --theme-admin-sidebar-bg: #ffffff;
+  --theme-admin-sidebar-fg: #374151;
+  --theme-admin-sidebar-active-bg: #000000;
+  --theme-admin-sidebar-active-fg: #ffffff;
+  --theme-admin-topbar-bg: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background-color: var(--theme-color-bg);
+  color: var(--theme-color-fg);
+  font-family: var(--theme-font-family);
+  font-size: var(--theme-font-size-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+}
+
+@layer components {
+  .container-shop {
+    @apply mx-auto w-full px-4 sm:px-6 lg:px-8;
+    max-width: var(--theme-container-width);
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium uppercase tracking-wide transition-colors disabled:bg-neutral-400;
+    background-color: var(--theme-color-primary);
+    color: var(--theme-color-bg);
+    border-radius: var(--theme-radius);
+  }
+  .btn-primary:hover:not(:disabled) {
+    background-color: var(--theme-color-primary-hover);
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 bg-white px-6 py-3 text-sm font-medium uppercase tracking-wide transition-colors;
+    border: 1px solid var(--theme-color-primary);
+    color: var(--theme-color-primary);
+    border-radius: var(--theme-radius);
+  }
+  .btn-outline:hover {
+    background-color: var(--theme-color-primary);
+    color: var(--theme-color-bg);
+  }
+
+  .link-hover {
+    @apply transition-colors;
+  }
+  .link-hover:hover {
+    color: var(--theme-color-muted);
+  }
+
+  .input-field {
+    @apply w-full bg-white px-3 py-2 text-sm outline-none focus:ring-1;
+    border: 1px solid var(--theme-color-border);
+    border-radius: var(--theme-radius);
+  }
+  .input-field:focus {
+    border-color: var(--theme-color-primary);
+    box-shadow: 0 0 0 1px var(--theme-color-primary);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.25s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #d4d4d4;
+}
+
+/*
+ * Seasonal "snowfall" effect — driven by `feature.seasonalTheme` in
+ * SiteSettings.  Each snowflake gets its own column / delay / duration as
+ * inline styles; the keyframe just animates the vertical journey + a slow
+ * rotation so the glyph doesn't look static.  Defined at the global level
+ * so the rule is available the moment the component mounts (an inline
+ * <style> tag would briefly render unstyled on the first paint).
+ */
+@keyframes seasonal-snowfall {
+  0% {
+    transform: translate3d(0, -10vh, 0) rotate(0deg);
+  }
+  100% {
+    transform: translate3d(0, 110vh, 0) rotate(360deg);
+  }
+}
+.seasonal-snowflake {
+  position: absolute;
+  top: 0;
+  /* Lightish blue so flakes stay visible against pure-white backgrounds.
+     A subtle blue glow lifts them off the page further. */
+  color: #bae6fd; /* sky-200 */
+  text-shadow:
+    0 0 6px rgba(125, 211, 252, 0.6),
+    0 1px 2px rgba(15, 23, 42, 0.18);
+  user-select: none;
+  pointer-events: none;
+  will-change: transform;
+  animation-name: seasonal-snowfall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
