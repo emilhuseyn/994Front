@@ -1,6 +1,6 @@
 'use client';
 
-import { useDeferredValue, useEffect, useMemo, useState } from 'react';
+import { Suspense, useDeferredValue, useEffect, useMemo, useState } from 'react';
 import FilterSidebar, { type Filters } from './FilterSidebar';
 import SortBar from './SortBar';
 import ProductGrid from './ProductGrid';
@@ -22,12 +22,26 @@ interface Props {
  * `useShopQuery` — that way pagination links and a hard refresh preserve the
  * user's choices, and the URL is shareable.
  *
+ * `useShopQuery` (and `Pagination`) call `useSearchParams()`, which forces a
+ * client-side-render bailout.  Next.js requires such components to sit inside
+ * a Suspense boundary or the production build fails to prerender the page —
+ * hence the thin Suspense wrapper around the real implementation below.
+ */
+export default function ShopView(props: Props) {
+  return (
+    <Suspense fallback={<div className="container-shop py-8" />}>
+      <ShopViewInner {...props} />
+    </Suspense>
+  );
+}
+
+/**
  * The search input is the one local-only piece of state: we mirror the URL
  * into a controlled input and only push back to the URL when the user pauses
  * typing (300 ms debounce).  Otherwise every keystroke would push a history
  * entry / trigger a re-render storm.
  */
-export default function ShopView({
+function ShopViewInner({
   products,
   currentPage,
   perPage = 12,
