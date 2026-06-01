@@ -29,6 +29,12 @@ interface AuthContextValue {
   isAdmin: boolean;
   loading: boolean;
   login: (email: string, password: string) => Promise<ApiUser>;
+  register: (
+    fullName: string,
+    email: string,
+    password: string,
+    phoneNumber?: string,
+  ) => Promise<ApiUser>;
   logout: () => void;
   refresh: (options?: { showLoading?: boolean }) => Promise<void>;
 }
@@ -96,6 +102,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return res.user;
   }, []);
 
+  const register = useCallback(
+    async (
+      fullName: string,
+      email: string,
+      password: string,
+      phoneNumber?: string,
+    ) => {
+      const res = await authApi.register(fullName, email, password, phoneNumber);
+      setUser(res.user);
+      setCachedUser(res.user);
+      return res.user;
+    },
+    [],
+  );
+
   const logout = useCallback(() => {
     setAccessToken(null);
     setCachedUser(null);
@@ -109,10 +130,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isAdmin: user?.role === ROLE.Admin,
       loading,
       login,
+      register,
       logout,
       refresh,
     }),
-    [user, loading, login, logout, refresh],
+    [user, loading, login, register, logout, refresh],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

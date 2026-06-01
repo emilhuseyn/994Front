@@ -7,6 +7,7 @@ import MobileMenu from './MobileMenu';
 import LanguageDropdown from './LanguageDropdown';
 import CartIcon from './CartIcon';
 import WishlistIcon from './WishlistIcon';
+import AccountMenu from './AccountMenu';
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -41,8 +42,9 @@ export default function Header() {
           CODE<span className="font-light">994</span>
         </Link>
 
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-4 sm:gap-5">
           <LanguageDropdown />
+          <AccountMenu />
           <WishlistIcon />
           <CartIcon />
         </div>

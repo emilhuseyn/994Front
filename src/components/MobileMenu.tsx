@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { categories, parentCategories } from '@/data/categories';
 import { brands } from '@/data/brands';
 import { useCart } from './CartProvider';
+import { useAuth } from './AuthProvider';
 import { formatPrice } from '@/lib/format';
 import { useTranslation } from '@/i18n/useTranslation';
 
@@ -18,6 +19,7 @@ type Section = 'menu' | 'sobeler' | 'brendler' | 'cart';
 export default function MobileMenu({ open, onClose }: Props) {
   const [section, setSection] = useState<Section>('menu');
   const { items, subtotal } = useCart();
+  const { isAuthenticated, user } = useAuth();
   const { t, locale } = useTranslation();
 
   const localizedParentName = (slug: string, defaultName: string) => {
@@ -85,6 +87,22 @@ export default function MobileMenu({ open, onClose }: Props) {
         <div className="flex-1 overflow-y-auto scrollbar-thin">
           {section === 'menu' && (
             <ul className="divide-y divide-neutral-100">
+              {/* Account row — login link for guests, account link for users */}
+              <li>
+                <Link
+                  href={isAuthenticated ? '/account' : '/login'}
+                  onClick={onClose}
+                  className="flex items-center gap-2 bg-neutral-50 px-4 py-4 text-sm font-semibold uppercase tracking-wider hover:bg-neutral-100"
+                >
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+                    <circle cx="12" cy="8" r="4" />
+                    <path d="M4 21c0-4 3.5-6 8-6s8 2 8 6" strokeLinecap="round" />
+                  </svg>
+                  {isAuthenticated && user
+                    ? user.fullName.split(' ')[0]
+                    : t('auth.login.title')}
+                </Link>
+              </li>
               <li>
                 <button
                   onClick={() => setSection('sobeler')}

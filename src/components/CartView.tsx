@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useCart } from './CartProvider';
 import { formatPrice } from '@/lib/format';
 import { ordersApi } from '@/lib/api/orders';
@@ -10,11 +10,13 @@ import { ApiError } from '@/lib/api';
 import { useTranslation } from '@/i18n/useTranslation';
 import FreeShippingBar from './FreeShippingBar';
 import { useSiteSettings } from './SiteSettingsProvider';
+import { useAuth } from './AuthProvider';
 
 export default function CartView() {
   const { t } = useTranslation();
   const { items, subtotal, updateQuantity, removeItem, clear, loading, error, refresh } =
     useCart();
+  const { user } = useAuth();
   const { get: getSetting } = useSiteSettings();
   // Free-shipping threshold lives in SiteSettings so admins can change it
   // without a deploy.  Falls back to the legacy 100 ₼ default.
@@ -40,6 +42,18 @@ export default function CartView() {
     createdAt: string;
   } | null>(null);
   const [orderError, setOrderError] = useState<string | null>(null);
+
+  // Pre-fill the checkout form from the logged-in user's profile — but only
+  // empty fields, so we never clobber something the customer is typing.
+  useEffect(() => {
+    if (!user) return;
+    setCheckout((c) => ({
+      ...c,
+      fullName: c.fullName || user.fullName || '',
+      email: c.email || user.email || '',
+      phone: c.phone || user.phoneNumber || '',
+    }));
+  }, [user]);
 
   async function withBusy(key: string, fn: () => Promise<void>) {
     setBusyKey(key);
