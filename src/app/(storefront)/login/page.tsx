@@ -38,7 +38,14 @@ function LoginForm() {
     setError(null);
     setSubmitting(true);
     try {
-      await login(email.trim(), password);
+      const res = await login(email.trim(), password);
+      if (res.requiresVerification) {
+        // Email not verified yet — go enter the code.
+        router.replace(
+          `/verify-email?email=${encodeURIComponent(res.email ?? email.trim())}&next=${encodeURIComponent(next)}`,
+        );
+        return;
+      }
       router.replace(next);
     } catch (err) {
       setError(err instanceof ApiError ? err.message : (err as Error).message);

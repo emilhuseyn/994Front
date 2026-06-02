@@ -8,7 +8,9 @@ export const authApi = {
       method: 'POST',
       body: { email, password },
     });
-    setAccessToken(res.accessToken);
+    // Only persist a token when one was actually issued — an unverified
+    // account comes back with requiresVerification and no token.
+    if (res.accessToken) setAccessToken(res.accessToken);
     return res;
   },
   async register(fullName: string, email: string, password: string, phoneNumber?: string) {
@@ -16,8 +18,22 @@ export const authApi = {
       method: 'POST',
       body: { fullName, email, password, phoneNumber },
     });
-    setAccessToken(res.accessToken);
+    if (res.accessToken) setAccessToken(res.accessToken);
     return res;
+  },
+  async verifyEmail(email: string, code: string) {
+    const res = await apiFetch<ApiAuthResponse>('/api/auth/verify-email', {
+      method: 'POST',
+      body: { email, code },
+    });
+    if (res.accessToken) setAccessToken(res.accessToken);
+    return res;
+  },
+  async resendCode(email: string) {
+    return apiFetch<null>('/api/auth/resend-code', {
+      method: 'POST',
+      body: { email },
+    });
   },
   async me(options?: { signal?: AbortSignal }) {
     try {

@@ -148,6 +148,7 @@ export interface ApiUser {
   phoneNumber?: string | null;
   role: number;
   isActive: boolean;
+  isEmailVerified?: boolean;
   createdAt: string;
 }
 
@@ -155,7 +156,11 @@ export interface ApiAuthResponse {
   accessToken: string;
   refreshToken: string;
   expiresAt: string;
-  user: ApiUser;
+  user?: ApiUser | null;
+  /** True when the account exists but the email isn't verified yet. */
+  requiresVerification?: boolean;
+  /** Email awaiting verification (set when requiresVerification). */
+  email?: string | null;
 }
 
 export interface ApiOrderItem {

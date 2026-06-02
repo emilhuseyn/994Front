@@ -16,7 +16,7 @@ import {
   setAccessToken,
   setCachedUser,
 } from '@/lib/session';
-import type { ApiUser } from '@/lib/api-types';
+import type { ApiAuthResponse, ApiUser } from '@/lib/api-types';
 
 export const ROLE = {
   Customer: 0,
@@ -28,13 +28,15 @@ interface AuthContextValue {
   isAuthenticated: boolean;
   isAdmin: boolean;
   loading: boolean;
-  login: (email: string, password: string) => Promise<ApiUser>;
+  login: (email: string, password: string) => Promise<ApiAuthResponse>;
   register: (
     fullName: string,
     email: string,
     password: string,
     phoneNumber?: string,
-  ) => Promise<ApiUser>;
+  ) => Promise<ApiAuthResponse>;
+  verifyEmail: (email: string, code: string) => Promise<ApiAuthResponse>;
+  resendCode: (email: string) => Promise<void>;
   logout: () => void;
   refresh: (options?: { showLoading?: boolean }) => Promise<void>;
 }
@@ -95,27 +97,37 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     refresh();
   }, [refresh]);
 
-  const login = useCallback(async (email: string, password: string) => {
-    const res = await authApi.login(email, password);
-    setUser(res.user);
-    setCachedUser(res.user);
-    return res.user;
-  }, []);
-
-  const register = useCallback(
-    async (
-      fullName: string,
-      email: string,
-      password: string,
-      phoneNumber?: string,
-    ) => {
-      const res = await authApi.register(fullName, email, password, phoneNumber);
+  // login/register/verifyEmail all return the raw response so callers can
+  // detect `requiresVerification` (no token issued yet) and route the user
+  // to the verification screen.  We only persist the session when a real
+  // user object came back.
+  const adopt = useCallback((res: ApiAuthResponse) => {
+    if (res.user) {
       setUser(res.user);
       setCachedUser(res.user);
-      return res.user;
-    },
-    [],
+    }
+    return res;
+  }, []);
+
+  const login = useCallback(
+    async (email: string, password: string) => adopt(await authApi.login(email, password)),
+    [adopt],
   );
+
+  const register = useCallback(
+    async (fullName: string, email: string, password: string, phoneNumber?: string) =>
+      adopt(await authApi.register(fullName, email, password, phoneNumber)),
+    [adopt],
+  );
+
+  const verifyEmail = useCallback(
+    async (email: string, code: string) => adopt(await authApi.verifyEmail(email, code)),
+    [adopt],
+  );
+
+  const resendCode = useCallback(async (email: string) => {
+    await authApi.resendCode(email);
+  }, []);
 
   const logout = useCallback(() => {
     setAccessToken(null);
@@ -131,10 +143,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       loading,
       login,
       register,
+      verifyEmail,
+      resendCode,
       logout,
       refresh,
     }),
-    [user, loading, login, register, logout, refresh],
+    [user, loading, login, register, verifyEmail, resendCode, logout, refresh],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

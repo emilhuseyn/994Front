@@ -50,7 +50,19 @@ function RegisterForm() {
 
     setSubmitting(true);
     try {
-      await register(fullName.trim(), email.trim(), password, phone.trim() || undefined);
+      const res = await register(
+        fullName.trim(),
+        email.trim(),
+        password,
+        phone.trim() || undefined,
+      );
+      // New accounts always need to verify their email before they're in.
+      if (res.requiresVerification) {
+        router.replace(
+          `/verify-email?email=${encodeURIComponent(res.email ?? email.trim())}&next=${encodeURIComponent(next)}`,
+        );
+        return;
+      }
       router.replace(next);
     } catch (err) {
       setError(err instanceof ApiError ? err.message : (err as Error).message);

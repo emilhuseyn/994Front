@@ -68,8 +68,15 @@ function LoginForm() {
     setError(null);
     setSubmitting(true);
     try {
-      const user = await login(email, password);
-      if (user.role !== 1) {
+      const res = await login(email, password);
+      // Unverified account (shouldn't happen for seeded admins, but guard).
+      if (res.requiresVerification) {
+        router.replace(
+          `/verify-email?email=${encodeURIComponent(res.email ?? email)}&next=${encodeURIComponent(next)}`,
+        );
+        return;
+      }
+      if (res.user?.role !== 1) {
         setError(t('admin.login.notAdmin'));
         return;
       }
