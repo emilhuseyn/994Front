@@ -107,6 +107,35 @@ export default function Footer() {
           </p>
         </div>
       </div>
+
+      {/* Tiny developer credit — understated, the kind you only notice if you look. */}
+      <div className="border-t border-neutral-100 py-2.5 text-center">
+        <a
+          href="https://emilh.site/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group inline-flex items-center gap-1 text-[10px] tracking-wide text-neutral-300 transition-colors hover:text-neutral-500"
+        >
+          <span>crafted by</span>
+          <span className="font-medium text-neutral-400 transition-colors group-hover:text-black">
+            emilh
+          </span>
+          <svg
+            viewBox="0 0 24 24"
+            width="9"
+            height="9"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="opacity-0 transition-opacity group-hover:opacity-100"
+            aria-hidden="true"
+          >
+            <path d="M7 17L17 7M9 7h8v8" />
+          </svg>
+        </a>
+      </div>
     </footer>
   );
 }
