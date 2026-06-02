@@ -336,14 +336,22 @@ export default function AdminUsersPage() {
               setEditForm((f) => ({ ...f, phoneNumber: e.target.value }))
             }
           />
-          <AdminSelect
-            label="Rol"
-            value={String(editForm.role)}
-            onChange={(e) => setEditForm((f) => ({ ...f, role: Number(e.target.value) }))}
-          >
-            <option value={String(ROLE.Customer)}>{ROLE_LABEL[ROLE.Customer]}</option>
-            <option value={String(ROLE.Admin)}>{ROLE_LABEL[ROLE.Admin]}</option>
-          </AdminSelect>
+          {/* Rol burada göstərilir, amma dəyişdirilə bilməz — yalnız oxunur.
+              editForm.role istifadəçinin cari rolu ilə qalır, yenilənmədə
+              dəyişmir. */}
+          <div>
+            <label className="mb-1 block text-xs font-medium uppercase tracking-wider text-neutral-600">
+              Rol
+            </label>
+            <div className="flex items-center gap-2 rounded border border-neutral-200 bg-neutral-50 px-3 py-2 text-sm text-neutral-700">
+              <AdminBadge tone={editForm.role === ROLE.Admin ? 'info' : 'neutral'}>
+                {ROLE_LABEL[editForm.role] ?? '—'}
+              </AdminBadge>
+              <span className="text-[11px] text-neutral-400">
+                (rol dəyişdirilə bilməz)
+              </span>
+            </div>
+          </div>
           <AdminCheckbox
             label="Aktiv"
             hint="Deaktiv istifadəçilər daxil ola bilməyəcəklər"
