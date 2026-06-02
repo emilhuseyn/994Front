@@ -108,28 +108,43 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Tiny developer credit — understated, the kind you only notice if you look. */}
-      <div className="border-t border-neutral-100 py-2.5 text-center">
+      {/* Developer credit — small but with character: animated heart,
+          gradient name, and an underline that draws itself on hover. */}
+      <div className="border-t border-neutral-100 bg-neutral-50/50 py-3 text-center">
         <a
           href="https://emilh.site/"
           target="_blank"
           rel="noopener noreferrer"
-          className="group inline-flex items-center gap-1 text-[10px] tracking-wide text-neutral-300 transition-colors hover:text-neutral-500"
+          className="group inline-flex items-center gap-1.5 text-[11px] font-medium tracking-wide text-neutral-500 transition-colors hover:text-neutral-700"
         >
-          <span>crafted by</span>
-          <span className="font-medium text-neutral-400 transition-colors group-hover:text-black">
-            emilh
-          </span>
+          <span>Crafted with</span>
           <svg
             viewBox="0 0 24 24"
-            width="9"
-            height="9"
+            width="12"
+            height="12"
+            fill="currentColor"
+            className="animate-pulse text-rose-500"
+            aria-hidden="true"
+          >
+            <path d="M12 21s-7.5-4.7-9.5-9.4C1 7.6 4 4 7.5 4c1.9 0 3.6 1 4.5 2.5C12.9 5 14.6 4 16.5 4 20 4 23 7.6 21.5 11.6 19.5 16.3 12 21 12 21z" />
+          </svg>
+          <span>by</span>
+          {/* Gradient name with a self-drawing underline on hover */}
+          <span className="relative inline-block bg-gradient-to-r from-fuchsia-600 via-violet-600 to-indigo-600 bg-clip-text font-bold text-transparent">
+            emilh
+            <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-fuchsia-600 to-indigo-600 transition-all duration-300 group-hover:w-full" />
+          </span>
+          {/* External-link arrow appears on hover */}
+          <svg
+            viewBox="0 0 24 24"
+            width="10"
+            height="10"
             fill="none"
             stroke="currentColor"
             strokeWidth="2.5"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="opacity-0 transition-opacity group-hover:opacity-100"
+            className="-translate-x-1 text-indigo-500 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100"
             aria-hidden="true"
           >
             <path d="M7 17L17 7M9 7h8v8" />
