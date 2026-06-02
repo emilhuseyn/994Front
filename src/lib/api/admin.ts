@@ -445,7 +445,19 @@ export const adminApi = {
     },
   },
   orders: {
-    list(params?: { page?: number; pageSize?: number; status?: number; search?: string }) {
+    list(params?: {
+      page?: number;
+      pageSize?: number;
+      status?: number;
+      paymentStatus?: number;
+      paymentMethod?: number;
+      search?: string;
+      dateFrom?: string;
+      dateTo?: string;
+      minTotal?: number;
+      maxTotal?: number;
+      sort?: string;
+    }) {
       return apiFetch<PaginatedList<ApiOrder>>('/api/admin/orders', {
         query: { ...params },
         cache: 'no-store',
