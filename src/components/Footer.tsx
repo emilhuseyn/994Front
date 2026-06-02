@@ -108,8 +108,8 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Developer credit — small but with character: animated heart,
-          gradient name, and an underline that draws itself on hover. */}
+      {/* Developer credit — clean: gradient name with a self-drawing
+          underline + sliding arrow on hover. */}
       <div className="border-t border-neutral-100 bg-neutral-50/50 py-3 text-center">
         <a
           href="https://emilh.site/"
@@ -117,18 +117,7 @@ export default function Footer() {
           rel="noopener noreferrer"
           className="group inline-flex items-center gap-1.5 text-[11px] font-medium tracking-wide text-neutral-500 transition-colors hover:text-neutral-700"
         >
-          <span>Crafted with</span>
-          <svg
-            viewBox="0 0 24 24"
-            width="12"
-            height="12"
-            fill="currentColor"
-            className="animate-pulse text-rose-500"
-            aria-hidden="true"
-          >
-            <path d="M12 21s-7.5-4.7-9.5-9.4C1 7.6 4 4 7.5 4c1.9 0 3.6 1 4.5 2.5C12.9 5 14.6 4 16.5 4 20 4 23 7.6 21.5 11.6 19.5 16.3 12 21 12 21z" />
-          </svg>
-          <span>by</span>
+          <span>Developed by</span>
           {/* Gradient name with a self-drawing underline on hover */}
           <span className="relative inline-block bg-gradient-to-r from-fuchsia-600 via-violet-600 to-indigo-600 bg-clip-text font-bold text-transparent">
             emilh
