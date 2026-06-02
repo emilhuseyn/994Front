@@ -90,6 +90,12 @@ export const dictionaries = {
     'account.noOrders': 'Hələ heç bir sifarişiniz yoxdur.',
     'account.startShopping': 'Alış-verişə başla',
     'account.logout': 'Çıxış',
+    'order.status.pending': 'Gözləyir',
+    'order.status.confirmed': 'Təsdiqlənib',
+    'order.status.preparing': 'Hazırlanır',
+    'order.status.shipped': 'Göndərilib',
+    'order.status.delivered': 'Çatdırılıb',
+    'order.status.cancelled': 'Ləğv edilib',
 
     // ---- Maintenance mode ----
     'maintenance.title': 'Texniki işlər aparılır',
@@ -403,6 +409,12 @@ export const dictionaries = {
     'account.noOrders': 'У вас пока нет заказов.',
     'account.startShopping': 'Начать покупки',
     'account.logout': 'Выйти',
+    'order.status.pending': 'Ожидает',
+    'order.status.confirmed': 'Подтверждён',
+    'order.status.preparing': 'Готовится',
+    'order.status.shipped': 'Отправлен',
+    'order.status.delivered': 'Доставлен',
+    'order.status.cancelled': 'Отменён',
 
     'maintenance.title': 'Технические работы',
     'maintenance.body': 'Сайт временно недоступен из-за обновления. Скоро вернёмся в лучшем виде — спасибо за терпение.',
@@ -704,6 +716,12 @@ export const dictionaries = {
     'account.noOrders': "You don't have any orders yet.",
     'account.startShopping': 'Start shopping',
     'account.logout': 'Log out',
+    'order.status.pending': 'Pending',
+    'order.status.confirmed': 'Confirmed',
+    'order.status.preparing': 'Preparing',
+    'order.status.shipped': 'Shipped',
+    'order.status.delivered': 'Delivered',
+    'order.status.cancelled': 'Cancelled',
 
     'maintenance.title': "We're under maintenance",
     'maintenance.body': "We're polishing the shop right now. Be back in a few — thanks for your patience.",

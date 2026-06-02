@@ -9,11 +9,11 @@ import { ordersApi } from '@/lib/api/orders';
 import { ApiError } from '@/lib/api';
 import { formatPrice } from '@/lib/format';
 import {
-  ORDER_STATUS_LABELS,
   PAYMENT_METHOD_LABELS,
   type OrderStatusValue,
 } from '@/lib/orders';
 import { useTranslation } from '@/i18n/useTranslation';
+import type { TranslationKey } from '@/i18n/dictionaries';
 import type { ApiOrder } from '@/lib/api-types';
 
 /** Badge colour per order status. */
@@ -24,6 +24,16 @@ const STATUS_BADGE: Record<OrderStatusValue, string> = {
   3: 'bg-indigo-100 text-indigo-800',
   4: 'bg-green-100 text-green-800',
   5: 'bg-red-100 text-red-800',
+};
+
+/** Locale-aware order-status label keys (translated at render). */
+const STATUS_KEY: Record<OrderStatusValue, TranslationKey> = {
+  0: 'order.status.pending',
+  1: 'order.status.confirmed',
+  2: 'order.status.preparing',
+  3: 'order.status.shipped',
+  4: 'order.status.delivered',
+  5: 'order.status.cancelled',
 };
 
 export default function AccountPage() {
@@ -182,7 +192,9 @@ export default function AccountPage() {
                         STATUS_BADGE[o.status as OrderStatusValue] ?? 'bg-neutral-100 text-neutral-700'
                       }`}
                     >
-                      {ORDER_STATUS_LABELS[o.status as OrderStatusValue] ?? o.status}
+                      {STATUS_KEY[o.status as OrderStatusValue]
+                        ? t(STATUS_KEY[o.status as OrderStatusValue])
+                        : o.status}
                     </span>
                   </header>
                   <div className="px-4 py-3">
