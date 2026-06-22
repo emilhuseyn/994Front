@@ -81,16 +81,16 @@ export default function HeroCarousel({ slides }: Props) {
               sizes="100vw"
             />
             <div className="container-shop relative flex h-full flex-col items-start justify-center gap-4">
-              <p className="text-xs uppercase tracking-[0.3em]">
+              <p className="text-sm uppercase tracking-[0.3em]">
                 {t('home.heroEyebrow')}
               </p>
               {title && (
-                <h1 className="max-w-xl text-4xl font-semibold leading-tight sm:text-5xl">
+                <h1 className="max-w-xl text-5xl font-semibold leading-tight sm:text-6xl">
                   {title}
                 </h1>
               )}
               {subtitle && (
-                <p className="max-w-md text-sm text-white/80">{subtitle}</p>
+                <p className="max-w-md text-base text-white/80 sm:text-lg">{subtitle}</p>
               )}
               {(s.buttonUrl || buttonText) && (
                 <Link
