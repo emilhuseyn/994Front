@@ -12,9 +12,8 @@ export default function TopBar() {
         color: 'var(--theme-announcement-fg)',
       }}
     >
-      <div className="container-shop flex flex-col items-center justify-center gap-1 py-2 text-[11px] tracking-wider sm:flex-row sm:gap-6 sm:text-xs">
+      <div className="container-shop flex flex-col items-center justify-center gap-1 py-2 text-[11px] tracking-wider sm:text-xs">
         <p className="text-center text-white/80">{t('topbar.address')}</p>
-        <span className="hidden h-3 w-px bg-white/40 sm:block" />
         <p className="text-center font-medium uppercase">{t('topbar.banner')}</p>
       </div>
     </div>
